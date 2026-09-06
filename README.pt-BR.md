@@ -62,13 +62,14 @@ Este método funciona de forma permanente no Firefox padrão, Waterfox e todos o
   - Exibe o nível de zoom atual e o nível máximo.
   - Clique em `+` ou `-` para ajustar o zoom.
   - Clique em `⟲` para redefinir o zoom para o nível 11.
-  - Clique no ícone de engrenagem para configurar opções.
+  - Clique no ícone de engrenagem para configurar opções (zoom máximo, filtro de imagem e idioma).
 
 ### Menu Popup da Extensão
 Clique no ícone da extensão na barra de ferramentas do navegador para alterar opções:
 - **Ativar Extensão**: Ativa ou desativa a expansão de zoom.
 - **Zoom Máximo**: Selecione um limite de zoom entre 16 e 22.
 - **Filtro de Imagem**: Selecione `Suave` (bilinear) ou `Nítido` (pixelado).
+- **Idioma**: Selecione `Automático (Navegador)`, `English` ou `Português`.
 - **Exibir HUD**: Mostra ou oculta a indicação na tela.
 
 ---

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Genshin Map Zoom Extender",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Unlock and extend zoom limits with virtual tile upscaling on the Genshin Impact interactive map (appsample.com).",
   "author": "Hylex",
   "icons": {

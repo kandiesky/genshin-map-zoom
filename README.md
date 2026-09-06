@@ -62,13 +62,14 @@ This method works permanently on standard Firefox, Waterfox, and all derivative 
   - Displays the current zoom level and maximum zoom level.
   - Click `+` or `-` to adjust zoom.
   - Click `Reset` to set zoom to level 11.
-  - Click the gear icon to configure options.
+  - Click the gear icon to configure options (maximum zoom, image filter, and language).
 
 ### Extension Popup Menu
 Click the extension icon in the browser toolbar to change options:
 - **Enable Extension**: Turn zoom expansion on or off.
 - **Max Zoom**: Select a maximum zoom limit between 16 and 22.
 - **Image Filter**: Select `Smooth` (bilinear) or `Sharp` (pixelated).
+- **Language**: Select `Auto (Browser)`, `English`, or `Português`.
 - **Show HUD**: Show or hide the on-screen display.
 
 ---

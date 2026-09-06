@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Genshin Map Zoom Extender
 // @namespace    https://github.com/hylex/genshin-map-zoom
-// @version      1.0.1
+// @version      1.0.2
 // @description  Unlock and extend zoom limits with virtual tile upscaling on the Genshin Impact interactive map (appsample.com).
 // @author       Hylex
 // @match        *://genshin-impact-map.appsample.com/*
@@ -21,12 +21,72 @@
 
   console.log('[GenshinMapZoom UserScript] Initializing engine...');
 
+  // ==========================================
+  // Internationalization (i18n)
+  // ==========================================
+  const TRANSLATIONS = {
+    en: {
+      zoom: 'Zoom',
+      zoomIn: 'Zoom in',
+      zoomOut: 'Zoom out',
+      resetZoom: 'Reset zoom (11)',
+      settings: 'Zoom settings',
+      maxZoom: 'Maximum zoom:',
+      imageFilter: 'Image filter:',
+      smooth: 'Smooth (Bilinear - Recommended)',
+      sharp: 'Sharp (Pixelated)',
+      extendedZoom: 'Extended zoom enabled',
+      language: 'Language:',
+      langAuto: 'Auto (Browser)',
+      langEn: 'English',
+      langPt: 'Português',
+      showHud: 'Show HUD on screen',
+      resetDefaults: 'Reset defaults',
+      recLabel: 'Recommended'
+    },
+    'pt-BR': {
+      zoom: 'Zoom',
+      zoomIn: 'Aumentar zoom',
+      zoomOut: 'Diminuir zoom',
+      resetZoom: 'Resetar zoom (11)',
+      settings: 'Configurações de zoom',
+      maxZoom: 'Zoom máximo:',
+      imageFilter: 'Filtro de imagem:',
+      smooth: 'Suave (Bilinear - Recomendado)',
+      sharp: 'Nítido (Pixelado)',
+      extendedZoom: 'Zoom estendido ativado',
+      language: 'Idioma:',
+      langAuto: 'Automático (Navegador)',
+      langEn: 'English',
+      langPt: 'Português',
+      showHud: 'Exibir indicador (HUD) na tela',
+      resetDefaults: 'Resetar padrões',
+      recLabel: 'Recomendado'
+    }
+  };
+
+  function getEffectiveLang(pref) {
+    if (pref && pref !== 'auto' && TRANSLATIONS[pref]) {
+      return pref;
+    }
+    const bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    if (bl.startsWith('pt')) return 'pt-BR';
+    return 'en';
+  }
+
+  function t(key) {
+    const lang = getEffectiveLang(config.language);
+    const table = TRANSLATIONS[lang] || TRANSLATIONS.en;
+    return table[key] || TRANSLATIONS.en[key] || key;
+  }
+
   const STORAGE_KEY = 'genshin_map_zoom_config';
   const DEFAULT_CONFIG = {
     enabled: true,
     maxZoom: 20,
     renderingMode: 'auto', // 'auto' (bilinear) or 'pixelated' (sharp)
-    showHud: true
+    showHud: true,
+    language: 'auto' // 'auto', 'en', 'pt-BR'
   };
 
   function loadConfig() {
@@ -349,36 +409,44 @@
         <span class="gmz-hud-icon">🔍</span>
         <span class="gmz-hud-zoom" id="gmz-hud-zoom-text">Zoom: --</span>
         <div class="gmz-hud-actions">
-          <button type="button" class="gmz-btn" id="gmz-btn-out" title="Diminuir Zoom">−</button>
-          <button type="button" class="gmz-btn" id="gmz-btn-in" title="Aumentar Zoom">+</button>
-          <button type="button" class="gmz-btn" id="gmz-btn-reset" title="Resetar Zoom (11)">⟲</button>
-          <button type="button" class="gmz-btn gmz-btn-gear" id="gmz-btn-menu" title="Configurações de Zoom">⚙</button>
+          <button type="button" class="gmz-btn" id="gmz-btn-out">−</button>
+          <button type="button" class="gmz-btn" id="gmz-btn-in">+</button>
+          <button type="button" class="gmz-btn" id="gmz-btn-reset">⟲</button>
+          <button type="button" class="gmz-btn gmz-btn-gear" id="gmz-btn-menu">⚙</button>
         </div>
       </div>
       <div class="gmz-hud-menu" id="gmz-hud-menu" style="display: none;">
         <div class="gmz-menu-row">
-          <label>Zoom Máximo:</label>
+          <label id="gmz-lbl-max">Maximum zoom:</label>
           <select id="gmz-select-max">
             <option value="16">16 (2x)</option>
             <option value="17">17 (4x)</option>
             <option value="18">18 (8x)</option>
             <option value="19">19 (16x)</option>
-            <option value="20" selected>20 (32x - Recomendado)</option>
+            <option value="20" selected>20 (32x)</option>
             <option value="21">21 (64x)</option>
             <option value="22">22 (128x)</option>
           </select>
         </div>
         <div class="gmz-menu-row">
-          <label>Filtro de Imagem:</label>
+          <label id="gmz-lbl-render">Image filter:</label>
           <select id="gmz-select-render">
-            <option value="auto">Suave (Bilinear)</option>
-            <option value="pixelated">Nítido (Pixelado)</option>
+            <option value="auto" id="gmz-opt-smooth">Smooth (Bilinear)</option>
+            <option value="pixelated" id="gmz-opt-sharp">Sharp (Pixelated)</option>
+          </select>
+        </div>
+        <div class="gmz-menu-row">
+          <label id="gmz-lbl-lang">Language:</label>
+          <select id="gmz-select-lang">
+            <option value="auto">Auto</option>
+            <option value="en">English</option>
+            <option value="pt-BR">Português</option>
           </select>
         </div>
         <div class="gmz-menu-row gmz-menu-check">
           <label>
             <input type="checkbox" id="gmz-check-enabled" checked />
-            Zoom Estendido Ativado
+            <span id="gmz-lbl-enabled">Extended zoom enabled</span>
           </label>
         </div>
       </div>
@@ -512,10 +580,12 @@
 
     const selectMax = document.getElementById('gmz-select-max');
     const selectRender = document.getElementById('gmz-select-render');
+    const selectLang = document.getElementById('gmz-select-lang');
     const checkEnabled = document.getElementById('gmz-check-enabled');
 
     selectMax.value = String(config.maxZoom);
     selectRender.value = config.renderingMode;
+    selectLang.value = config.language || 'auto';
     checkEnabled.checked = config.enabled;
 
     selectMax.addEventListener('change', (e) => {
@@ -531,6 +601,13 @@
       applyRenderingMode();
     });
 
+    selectLang.addEventListener('change', (e) => {
+      config.language = e.target.value;
+      saveConfig(config);
+      updateHudI18n();
+      updateHud();
+    });
+
     checkEnabled.addEventListener('change', (e) => {
       config.enabled = e.target.checked;
       saveConfig(config);
@@ -538,7 +615,32 @@
       updateHud();
     });
 
+    updateHudI18n();
     updateHud();
+  }
+
+  function updateHudI18n() {
+    const btnOut = document.getElementById('gmz-btn-out');
+    const btnIn = document.getElementById('gmz-btn-in');
+    const btnReset = document.getElementById('gmz-btn-reset');
+    const btnMenu = document.getElementById('gmz-btn-menu');
+    const lblMax = document.getElementById('gmz-lbl-max');
+    const lblRender = document.getElementById('gmz-lbl-render');
+    const lblLang = document.getElementById('gmz-lbl-lang');
+    const lblEnabled = document.getElementById('gmz-lbl-enabled');
+    const optSmooth = document.getElementById('gmz-opt-smooth');
+    const optSharp = document.getElementById('gmz-opt-sharp');
+
+    if (btnOut) btnOut.title = t('zoomOut');
+    if (btnIn) btnIn.title = t('zoomIn');
+    if (btnReset) btnReset.title = t('resetZoom');
+    if (btnMenu) btnMenu.title = t('settings');
+    if (lblMax) lblMax.textContent = t('maxZoom');
+    if (lblRender) lblRender.textContent = t('imageFilter');
+    if (lblLang) lblLang.textContent = t('language');
+    if (lblEnabled) lblEnabled.textContent = t('extendedZoom');
+    if (optSmooth) optSmooth.textContent = t('smooth');
+    if (optSharp) optSharp.textContent = t('sharp');
   }
 
   function updateHud() {
@@ -559,7 +661,7 @@
       curZoom = window.__genshinMap.getZoom();
     }
     const maxZoom = config.enabled ? config.maxZoom : 15;
-    hudZoomLabel.textContent = `Zoom: ${curZoom} / ${maxZoom}`;
+    hudZoomLabel.textContent = `${t('zoom')}: ${curZoom} / ${maxZoom}`;
   }
 
   startMonitoring();

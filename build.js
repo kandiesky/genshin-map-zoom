@@ -17,7 +17,8 @@ execSync('node --check extension/inject.js', { stdio: 'inherit' });
 execSync('node --check extension/content.js', { stdio: 'inherit' });
 execSync('node --check extension/popup/popup.js', { stdio: 'inherit' });
 execSync('node --check genshin-map-zoom.user.js', { stdio: 'inherit' });
-console.log('   All JS files passed syntax check!');
+execSync('node test_i18n.js', { stdio: 'inherit' });
+console.log('   All JS files passed syntax and i18n checks!');
 
 // 3. Compress extension to .zip and .xpi
 console.log('3. Creating .xpi and .zip packages...');

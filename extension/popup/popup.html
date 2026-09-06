@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Genshin Map Zoom Extender</title>
@@ -11,12 +11,12 @@
       <span class="icon">🔍</span>
       <h1>Genshin Map Zoom</h1>
     </div>
-    <span class="version">v1.0.0</span>
+    <span class="version">v1.0.2</span>
   </div>
 
   <div class="card">
     <div class="control-group toggle-group">
-      <label for="enable-toggle">Ativar Zoom Estendido</label>
+      <label for="enable-toggle" id="lbl-enable">Extended zoom enabled</label>
       <label class="switch">
         <input type="checkbox" id="enable-toggle" checked>
         <span class="slider round"></span>
@@ -27,7 +27,7 @@
   <div class="card" id="settings-card">
     <div class="control-group">
       <div class="label-row">
-        <label for="max-zoom-slider">Zoom Máximo:</label>
+        <label for="max-zoom-slider" id="lbl-max-zoom">Maximum zoom:</label>
         <span id="max-zoom-val" class="badge">20</span>
       </div>
       <input type="range" id="max-zoom-slider" min="16" max="22" value="20" step="1">
@@ -40,15 +40,24 @@
     </div>
 
     <div class="control-group">
-      <label for="render-mode-select">Filtro de Imagem (Upscaling):</label>
+      <label for="render-mode-select" id="lbl-render-mode">Image filter (upscaling):</label>
       <select id="render-mode-select">
-        <option value="auto">Suave (Bilinear - Padrão)</option>
-        <option value="pixelated">Nítido (Pixelado)</option>
+        <option value="auto" id="opt-smooth">Smooth (Bilinear - Recommended)</option>
+        <option value="pixelated" id="opt-sharp">Sharp (Pixelated)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="lang-select" id="lbl-language">Language:</label>
+      <select id="lang-select">
+        <option value="auto" id="opt-lang-auto">Auto (Browser)</option>
+        <option value="en">English</option>
+        <option value="pt-BR">Português</option>
       </select>
     </div>
 
     <div class="control-group toggle-group">
-      <label for="hud-toggle">Exibir Indicador (HUD) na Tela</label>
+      <label for="hud-toggle" id="lbl-hud">Show HUD on screen</label>
       <label class="switch">
         <input type="checkbox" id="hud-toggle" checked>
         <span class="slider round"></span>
@@ -57,11 +66,11 @@
   </div>
 
   <div class="actions">
-    <button type="button" id="btn-reset" class="btn-secondary">Resetar Padrões</button>
+    <button type="button" id="btn-reset" class="btn-secondary">Reset defaults</button>
   </div>
 
   <div class="footer">
-    <p>Para o site <a href="https://genshin-impact-map.appsample.com/" target="_blank">appsample.com</a></p>
+    <p id="lbl-footer">For <a href="https://genshin-impact-map.appsample.com/" target="_blank">genshin-impact-map.appsample.com</a></p>
   </div>
 
   <script src="popup.js"></script>
