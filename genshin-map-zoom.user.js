@@ -11,7 +11,7 @@
 
 /**
  * Genshin Map Zoom Extender - UserScript Edition
- * Compatible with Violentmonkey, Tampermonkey, Greasemonkey, FireMonkey on Waterfox/Firefox/Chrome
+ * Compatible with Violentmonkey, Tampermonkey, Greasemonkey, FireMonkey on Firefox/Waterfox/Chrome
  */
 (function() {
   'use strict';

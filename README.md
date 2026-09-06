@@ -2,7 +2,7 @@
 
 Languages: English | [Português](README.pt-BR.md)
 
-This project provides a browser extension and a UserScript for Waterfox and Firefox. The software increases the maximum zoom limit on the interactive map website [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
+This project provides a browser extension and a UserScript for Firefox and compatible browsers (such as Waterfox). The software increases the maximum zoom limit on the interactive map website [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
 
 ---
 
@@ -22,29 +22,30 @@ This software modifies the map behavior:
 
 You can install this software as a browser extension or as a UserScript.
 
-### Option 1: Browser Extension (Waterfox)
+### Option 1: Browser Extension (Firefox / Waterfox)
 
 #### Temporary Installation
-1. Start Waterfox.
+1. Start Firefox or Waterfox.
 2. In the address bar, enter `about:debugging`.
-3. In the left navigation menu, click **This Waterfox**.
+3. In the left navigation menu, click **This Firefox** (or **This Waterfox**).
 4. In the **Temporary Extensions** section, click **Load Temporary Add-on...**.
 5. Select the `extension/manifest.json` file, or the `genshin-map-zoom.xpi` file.
 
-#### Permanent Installation
-1. Start Waterfox.
-2. In the address bar, enter `about:config`.
-3. Click **Accept the Risk and Continue**.
-4. In the search field, enter `xpinstall.signatures.required`.
-5. Set the preference value to `false`.
-6. Open `about:addons`.
-7. Click the gear icon, then click **Install Add-on From File...**.
-8. Select the `genshin-map-zoom.xpi` file.
-9. Confirm the installation prompt.
+#### Permanent Installation (Waterfox, Firefox Developer Edition, or Nightly)
+Standard Firefox requires digital signatures by Mozilla. Waterfox, Firefox Developer Edition, and Firefox Nightly allow unsigned extensions:
+1. In the address bar, enter `about:config`.
+2. Click **Accept the Risk and Continue**.
+3. In the search field, enter `xpinstall.signatures.required`.
+4. Set the preference value to `false`.
+5. Open `about:addons`.
+6. Click the gear icon, then click **Install Add-on From File...**.
+7. Select the `genshin-map-zoom.xpi` file.
+8. Confirm the installation prompt.
 
-### Option 2: UserScript (Violentmonkey or Tampermonkey)
+### Option 2: UserScript (Violentmonkey, Tampermonkey, or FireMonkey)
 
-1. Open your UserScript manager in Waterfox.
+This method works permanently on standard Firefox, Waterfox, and all derivative browsers without signature restrictions:
+1. Open your UserScript manager in Firefox or Waterfox.
 2. Create a new UserScript.
 3. Replace the script contents with the code from `genshin-map-zoom.user.js`.
 4. Save the script (`Ctrl+S`).
@@ -118,7 +119,7 @@ GenshinMapZoom/
 
 ## Compatibility
 
-- **Browser**: Waterfox (Current, G-series), Firefox.
+- **Browsers**: Firefox, Waterfox, LibreWolf, Floorp.
 - **UserScript Managers**: Violentmonkey, Tampermonkey, FireMonkey.
 - **Website**: [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
 
