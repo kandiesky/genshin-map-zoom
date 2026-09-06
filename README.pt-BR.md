@@ -1,114 +1,129 @@
-# Genshin Map Zoom Extender 🔍🗺️
+# Genshin Map Zoom Extender
 
-🌐 **Idiomas / Languages:** [🇺🇸 English](README.md) | **🇧🇷 Português**
+Idiomas: [English](README.md) | Português
 
-Extensão e UserScript para **Waterfox** (e Firefox) que remove o limite de zoom do mapa interativo de Genshin Impact no site [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
-
----
-
-## 🎯 O Problema que Resolve
-
-No site oficial do AppSample:
-- O zoom máximo nativo é travado em **15** (e **13** em áreas como Chasm e Enkanomiya).
-- Os servidores do mapa não possuem imagens de blocos (tiles) para zoom 16+, o que normalmente causaria tela preta ao tentar forçar o zoom.
-- Em áreas com alta densidade de itens (templos, cavernas, vilas), os marcadores de baús, óculos e quests ficam **completamente amontoados e sobrepostos**, sendo impossível distinguir qual é qual.
-
-## 🚀 Como Esta Extensão Resolve
-
-1. **Desbloqueio de Zoom**: Eleva o nível de zoom máximo de 15 para até **20 (32x mais próximo)** ou **22 (128x)**.
-2. **Reamostragem e Upscaling Virtual de Tiles**: Quando você dá zoom além do nível nativo (16 a 22), o algoritmo calcula a posição exata no bloco original (zoom 15) que já está em cache e o amplia dinamicamente com aceleração por GPU. Zero telas pretas, zero requisições 404.
-3. **Separação Natural dos Marcadores**: Como os marcadores usam coordenadas de latitude/longitude no Google Maps, ao aproximar a câmera eles **se separam perfeitamente na tela**, revelando cada baú e item individualmente.
-4. **Controles Nativos e HUD Flutuante**: Funciona diretamente com a **rodinha do mouse (scroll)**, **duplo clique** e com os botões `+` e `−` do próprio site. Além disso, adiciona um painel HUD discreto na tela e um menu popup na barra de ferramentas.
+Este projeto fornece uma extensão de navegador e um UserScript para Waterfox e Firefox. O software aumenta o limite máximo de zoom no site de mapa interativo [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
 
 ---
 
-## 📦 Opções de Instalação no Waterfox
+## Finalidade
 
-Você pode instalar de duas formas práticas:
+O site de destino limita o zoom do mapa ao nível 15 no mapa principal e ao nível 13 em mapas secundários (como The Chasm e Enkanomiya). O servidor de blocos não armazena imagens de blocos acima desses níveis. Quando marcadores estão próximos, eles se sobrepõem.
 
-### Método 1: Como Extensão do Waterfox (Recomendado)
-
-#### Opção A — Carregar Temporariamente (Rápido para Testar):
-1. Abra o **Waterfox**.
-2. Na barra de endereços, digite: `about:debugging` e pressione Enter.
-3. No menu à esquerda, clique em **Este Waterfox** (This Waterfox / Runtime).
-4. Na seção *Extensões Temporárias*, clique em **Carregar extensão temporária...** (Load Temporary Add-on...).
-5. Navegue até a pasta deste projeto e selecione o arquivo:
-   ```
-   manifest.json  (dentro da pasta extension/)
-   OU
-   genshin-map-zoom.xpi  (na raiz do projeto)
-   ```
-6. Pronto! A extensão estará ativa e com o ícone visível na barra de ferramentas.
-
-#### Opção B — Instalação Permanente no Waterfox:
-O Waterfox (ao contrário do Firefox padrão) permite instalar extensões não assinadas permanentemente:
-1. No Waterfox, abra `about:config` e clique em *Aceitar o risco e continuar*.
-2. Pesquise por `xpinstall.signatures.required` e altere seu valor para `false`.
-3. Abra `about:addons` (Gerenciador de extensões).
-4. Clique no ícone de engrenagem ⚙ no canto superior direito e selecione **Instalar extensão a partir de um arquivo...**.
-5. Selecione o arquivo `genshin-map-zoom.xpi` ou arraste-o para a janela do Waterfox.
-6. Confirme a instalação.
+Este software altera o comportamento do mapa:
+- Aumenta o nível máximo de zoom para o nível 20 ou 22.
+- Calcula as coordenadas do bloco pai e redimensiona os blocos em cache para níveis de zoom mais altos.
+- Separa os marcadores sobrepostos na tela.
+- Mantém a compatibilidade com a roda do mouse, duplo clique e botões de zoom da tela.
 
 ---
 
-### Método 2: Como UserScript (Violentmonkey / Tampermonkey)
+## Instalação
 
-Se você já usa gerenciadores de scripts de usuário (como **Violentmonkey** ou **Tampermonkey**) no Waterfox:
-1. Abra o seu gerenciador de UserScripts no Waterfox.
-2. Crie um novo script.
-3. Copie e cole todo o conteúdo do arquivo [genshin-map-zoom.user.js](./genshin-map-zoom.user.js).
+Você pode instalar este software como uma extensão de navegador ou como um UserScript.
+
+### Opção 1: Extensão de Navegador (Waterfox)
+
+#### Instalação Temporária
+1. Inicie o Waterfox.
+2. Na barra de endereços, digite `about:debugging`.
+3. No menu à esquerda, clique em **Este Waterfox**.
+4. Na seção **Extensões Temporárias**, clique em **Carregar extensão temporária...**.
+5. Selecione o arquivo `extension/manifest.json` ou o arquivo `genshin-map-zoom.xpi`.
+
+#### Instalação Permanente
+1. Inicie o Waterfox.
+2. Na barra de endereços, digite `about:config`.
+3. Clique em **Aceitar o risco e continuar**.
+4. No campo de pesquisa, digite `xpinstall.signatures.required`.
+5. Altere o valor da preferência para `false`.
+6. Abra `about:addons`.
+7. Clique no ícone de engrenagem e clique em **Instalar extensão a partir de um arquivo...**.
+8. Selecione o arquivo `genshin-map-zoom.xpi`.
+9. Confirme a solicitação de instalação.
+
+### Opção 2: UserScript (Violentmonkey ou Tampermonkey)
+
+1. Abra o gerenciador de UserScripts no Waterfox.
+2. Crie um novo UserScript.
+3. Substitua o conteúdo do script pelo código do arquivo `genshin-map-zoom.user.js`.
 4. Salve o script (`Ctrl+S`).
-5. Acesse [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/) e aproveite!
+5. Abra o site [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
 
 ---
 
-## 🎮 Controles e Funcionalidades
+## Controles do Usuário
 
-### 1. No Mapa
-- **Roda do Mouse / Pinch no Touchpad**: Aumente ou diminua o zoom livremente.
-- **Botões nativos `+` e `−`**: Continuam funcionando até o novo limite máximo.
-- **HUD Flutuante (canto inferior direito)**:
-  - Exibe o nível atual em tempo real (ex: `🔍 Zoom: 18 / 20`).
-  - Botões rápidos `[−]` e `[+]`.
-  - Botão `[⟲]` para resetar rapidamente para o zoom padrão (11).
-  - Botão de engrenagem `[⚙]` para abrir as opções rápidas direto na tela.
+### Interface na Tela
+- **Roda do Mouse / Touchpad**: Role para alterar o nível de zoom.
+- **Botões de Zoom na Tela**: Clique em `+` ou `-` para ajustar o nível de zoom.
+- **Painel HUD (Canto Inferior Direito)**:
+  - Exibe o nível de zoom atual e o nível máximo.
+  - Clique em `+` ou `-` para ajustar o zoom.
+  - Clique em `⟲` para redefinir o zoom para o nível 11.
+  - Clique no ícone de engrenagem para configurar opções.
 
-### 2. No Popup da Extensão (Barra do Navegador)
-- **Ativar / Desativar Zoom Estendido**: Ativa ou restaura o limite padrão do site instantaneamente.
-- **Slider de Zoom Máximo**: Escolha entre 16 (2x), 18 (8x), 20 (32x) ou até 22 (128x).
-- **Filtro de Imagem (Upscaling)**:
-  - *Suave (Bilinear)*: Interpolação suave padrão para fotos e mapas.
-  - *Nítido (Pixelado)*: Mantém bordas nítidas sem borrar.
-- **Exibir Indicador HUD**: Permite ocultar o HUD na tela se preferir uma visão limpa.
+### Menu Popup da Extensão
+Clique no ícone da extensão na barra de ferramentas do navegador para alterar opções:
+- **Ativar Extensão**: Ativa ou desativa a expansão de zoom.
+- **Zoom Máximo**: Selecione um limite de zoom entre 16 e 22.
+- **Filtro de Imagem**: Selecione `Suave` (bilinear) ou `Nítido` (pixelado).
+- **Exibir HUD**: Mostra ou oculta a indicação na tela.
 
 ---
 
-## 🛠️ Estrutura do Projeto
+## Operação Técnica
+
+1. O script é executado antes dos scripts da página (`document-start`).
+2. O script monitora o objeto `window.google.maps`.
+3. Quando `google.maps.Map` inicializa, o script define `options.maxZoom` com o valor selecionado pelo usuário.
+4. Quando `google.maps.ImageMapType` inicializa, o script substitui `getTile`:
+   - Para níveis de zoom iguais ou inferiores ao limite nativo, chama a função de bloco original.
+   - Para níveis de zoom acima do limite nativo, calcula:
+     - `k = zoom - nativeMax`
+     - `scale = 2^k`
+     - `parentX = floor(coord.x / scale)`
+     - `parentY = floor(coord.y / scale)`
+     - `dx = coord.x - parentX * scale`
+     - `dy = coord.y - parentY * scale`
+   - Cria um elemento que renderiza a imagem do bloco pai com deslocamento CSS correspondente.
+
+---
+
+## Estrutura do Projeto
 
 ```
 GenshinMapZoom/
-├── extension/                   # Código fonte da WebExtension
-│   ├── manifest.json            # Manifesto de configuração (Waterfox/Firefox)
-│   ├── content.js               # Script de conteúdo (injeção e ponte de mensagens)
-│   ├── inject.js                # Motor de interceptação do Google Maps e upscaling
-│   ├── popup/                   # Interface de configurações do popup
+├── extension/                   # Arquivos fonte da extensão
+│   ├── manifest.json            # Manifesto da extensão
+│   ├── content.js               # Script de conteúdo
+│   ├── inject.js                # Interceptador do mapa e redimensionador de blocos
+│   ├── popup/                   # Interface popup da extensão
 │   │   ├── popup.html
 │   │   ├── popup.css
 │   │   └── popup.js
-│   └── icons/                   # Ícones da extensão (16, 48, 128px)
-├── genshin-map-zoom.user.js     # Versão completa em arquivo único para Violentmonkey/Tampermonkey
-├── genshin-map-zoom.xpi         # Pacote compilado para instalação direta
-├── genshin-map-zoom.zip         # Pacote .zip da extensão
-├── generate_icons.js            # Gerador de ícones PNG em Node.js puro
-├── build.js                     # Script de empacotamento automatizado
-├── README.md                    # Versão em inglês
-└── README.pt-BR.md              # Este guia em português
+│   └── icons/                   # Ícones da extensão
+├── genshin-map-zoom.user.js     # UserScript autocontido
+├── genshin-map-zoom.xpi         # Pacote de extensão compilado
+├── genshin-map-zoom.zip         # Arquivo compactado
+├── generate_icons.js            # Script gerador de ícones
+├── build.js                     # Script de empacotamento
+├── test_engine.js               # Testes de cálculo de coordenadas
+├── test_hook_lifecycle.js       # Testes de ciclo de vida assíncrono
+├── README.md                    # Documentação em inglês
+└── README.pt-BR.md              # Documentação em português
 ```
 
 ---
 
-## 💻 Compatibilidade Testada
-- **Waterfox**: Totalmente compatível (Current e G-series).
-- **Firefox**: Compatível via `about:debugging` e UserScript.
-- **Site Alvo**: [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/) (suporta mapa de Teyvat, Enkanomiya, Chasm, subterrâneo e camadas de andares).
+## Compatibilidade
+
+- **Navegadores**: Waterfox (Current, G-series), Firefox.
+- **Gerenciadores de UserScript**: Violentmonkey, Tampermonkey, FireMonkey.
+- **Site de Destino**: [genshin-impact-map.appsample.com](https://genshin-impact-map.appsample.com/).
+
+---
+
+## Licença
+
+Este projeto é distribuído sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
