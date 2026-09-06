@@ -2,7 +2,7 @@
 // @name         Genshin Map Zoom Extender
 // @namespace    https://github.com/hylex/genshin-map-zoom
 // @version      1.0.1
-// @description  Desbloqueia e amplia o limite de zoom no mapa interativo de Genshin Impact (appsample.com).
+// @description  Unlock and extend zoom limits with virtual tile upscaling on the Genshin Impact interactive map (appsample.com).
 // @author       Hylex
 // @match        *://genshin-impact-map.appsample.com/*
 // @run-at       document-start

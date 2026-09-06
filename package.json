@@ -1,7 +1,7 @@
 {
   "name": "genshin-map-zoom",
   "version": "1.0.1",
-  "description": "Desbloqueia e amplia o limite de zoom no mapa interativo de Genshin Impact (appsample.com)",
+  "description": "Unlock and extend zoom limits with virtual tile upscaling on the Genshin Impact interactive map (appsample.com)",
   "main": "extension/inject.js",
   "scripts": {
     "test": "node test_engine.js && node test_hook_lifecycle.js",
