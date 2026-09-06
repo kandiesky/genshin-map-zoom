@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "Genshin Map Zoom Extender",
+  "version": "1.0.0",
+  "description": "Desbloqueia e amplia o nível de zoom no mapa interativo de Genshin Impact (appsample).",
+  "author": "Hylex",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "*://genshin-impact-map.appsample.com/*",
+    "storage"
+  ],
+  "browser_action": {
+    "default_icon": "icons/icon48.png",
+    "default_title": "Genshin Map Zoom Extender",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://genshin-impact-map.appsample.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    "inject.js"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "genshin-map-zoom@hylex.local",
+      "strict_min_version": "57.0"
+    }
+  }
+}

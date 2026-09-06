@@ -1,0 +1,33 @@
+{
+  "name": "genshin-map-zoom",
+  "version": "1.0.1",
+  "description": "Desbloqueia e amplia o limite de zoom no mapa interativo de Genshin Impact (appsample.com)",
+  "main": "extension/inject.js",
+  "scripts": {
+    "test": "node test_engine.js && node test_hook_lifecycle.js",
+    "icons": "node generate_icons.js",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "genshin-impact",
+    "map",
+    "interactive-map",
+    "zoom",
+    "userscript",
+    "violentmonkey",
+    "tampermonkey",
+    "waterfox",
+    "firefox-extension",
+    "webextension"
+  ],
+  "author": "kandiesky",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kandiesky/genshin-map-zoom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kandiesky/genshin-map-zoom/issues"
+  },
+  "homepage": "https://github.com/kandiesky/genshin-map-zoom#readme"
+}
